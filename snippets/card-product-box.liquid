@@ -35,7 +35,8 @@
    {% for variant in card_product.variants %}
     <li>      
      <img src="{{ variant.featured_media | image_url: width: 165 }}" >
-      {{ variant.title }}
+      <p>{{ variant.title }}</p>
+      
      <div class="selected-qty">
        <span>-</span>
        <span>1</span>
