@@ -33,10 +33,14 @@
   </select>
 
    {% for variant in card_product.variants %}
-    <li>
-      {{ variant.title }}
+    <li>      
      <img src="{{ variant.featured_media | image_url: width: 165 }}" >
-     
+      {{ variant.title }}
+     <div>
+       <span>-</span>
+       <span></span>
+       <span>+</span>      
+     </div>
     </li>
    {% endfor %}
 
