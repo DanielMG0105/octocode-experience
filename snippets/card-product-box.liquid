@@ -397,6 +397,18 @@
 }
 .selected-qty span:first-of-type,
 .selected-qty span:last-of-type {
- border:1px solid red;
+  border: 1px solid black;
+  padding: 5px;
+  align-self: baseline;
+  height: 30px;
+  width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-basis:20%;
 }
+  .selected-qty span:nth-of-type(2){
+    flex-basis:60%;
+  }
 </style>
