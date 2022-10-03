@@ -35,7 +35,8 @@
    {% for variant in card_product.variants %}
     <li>
       {{ variant.title }}
-     {{ variant.featured_media | image_url: width: 165 }}
+     <img src="{{ variant.featured_media | image_url: width: 165 }}" >
+     
     </li>
    {% endfor %}
 
