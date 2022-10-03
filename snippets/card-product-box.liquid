@@ -32,7 +32,11 @@
   {% endfor %}
   </select>
 
-  
+   {% for variant in card_product.variants %}
+    <li>
+      {{ variant.title }}
+    </li>
+   {% endfor %}
 
 {{ 'component-rating.css' | asset_url | stylesheet_tag }}
 
