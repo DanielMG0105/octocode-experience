@@ -19,6 +19,9 @@
 
 <select class="product-form__variants">
   {% for variant in card_product.variants %}
+    <li>
+      {{ variant.title }}
+    </li>
     {% if variant.available %}
       <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} value="{{ variant.id }}">
         {{ variant.title }}
@@ -29,9 +32,7 @@
   {% endfor %}
   </select>
 
-  <li>
-    {{ variant.title }}
-  </li>
+  
 
 {{ 'component-rating.css' | asset_url | stylesheet_tag }}
 
