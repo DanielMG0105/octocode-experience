@@ -105,30 +105,68 @@
           <div class="collection{% if section.settings.filter_type != 'vertical' %} page-width{% endif %}">
             <div class="loading-overlay gradient"></div>
 
-            <ul id="product-grid" data-id="{{ section.id }}" class="
-                                              grid product-grid grid--{{ section.settings.columns_mobile }}-col-tablet-down
-                                              grid--{{ section.settings.columns_desktop }}-col-desktop">
-              {%- for product in collection.products -%}
-                
-                {% assign lazy_load = false %}
-                {%- if forloop.index > 2 -%}
-                  {%- assign lazy_load = true -%}
-                {%- endif -%}
-                <div class="build-box-item">
-                  {% render 'card-product-box',
-                      card_product: product,
-                      media_aspect_ratio: section.settings.image_ratio,
-                      show_secondary_image: section.settings.show_secondary_image,
-                      show_vendor: section.settings.show_vendor,
-                      show_rating: section.settings.show_rating,
-                      lazy_load: lazy_load,
-                      show_quick_add: section.settings.enable_quick_add,
-                      section_id: section.id
-  
-                    %}
+            <div class="select-box">
+              <div class="active" data-size-box="12">
+                <h3>BOX OF 12</h3>
+              </div>
+              <div data-size-box="24">
+                <h3>BOX OF 24</h3>
+              </div>
+            </div>
+
+            <div class="wrapper-info-container-box">
+              <div class="items-variants">
+                <div class="header-your-box">
+                    {%- for product in collection.products -%}
+                    <h3 class="card__heading" data-prod-id="{{ product.id }}">
+                        {{ product.title | escape }}      
+                    </h3>
+                    {%- endfor -%}
                 </div>
-              {%- endfor -%}
-            </ul>
+                  <ul id="product-grid" data-id="{{ section.id }}" class="                                              grid product-grid grid--{{ section.settings.columns_mobile }}-col-tablet-down grid--{{ section.settings.columns_desktop }}-col-desktop">
+                {%- for product in collection.products -%}                
+                  {% assign lazy_load = false %}
+                  {%- if forloop.index > 2 -%}
+                    {%- assign lazy_load = true -%}
+                  {%- endif -%}
+                  <li class="list-variants" id="list-{{ product.id }}">
+                  <div class="build-box-item">
+                    {% render 'card-product-box',
+                        card_product: product,
+                        media_aspect_ratio: section.settings.image_ratio,
+                        show_secondary_image: section.settings.show_secondary_image,
+                        show_vendor: section.settings.show_vendor,
+                        show_rating: section.settings.show_rating,
+                        lazy_load: lazy_load,
+                        show_quick_add: section.settings.enable_quick_add,
+                        section_id: section.id
+    
+                      %}
+                  </div>
+                  </li>
+                {%- endfor -%}
+              </ul>
+              </div>
+              <div class="in-your-box">            
+                <div class="header-your-box">
+                  <h2>IN YOUR BOX</h2>
+                  <span class="curr-added">0</span>
+                  <span>/</span>
+                  <span class="size-box">12</span>
+                </div>
+                <div class="btn-totals">
+                  <p>Total</p>
+                  <span>Reset</span>
+                </div>
+                <div class="items-added">
+   
+                </div>
+              </div>
+            </div>
+
+           
+
+          
 
             {%- if paginate.pages > 1 -%}
               {% render 'pagination', paginate: paginate, anchor: '' %}
@@ -144,7 +182,7 @@
 {% schema %}
   {
     "name": "t:sections.main-collection-product-grid.name",
-    "class": "section",
+    "class": "section-build-box",
     "settings": [
       {
         "type": "range",

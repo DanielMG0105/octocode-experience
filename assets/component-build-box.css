@@ -1,59 +1,156 @@
-#product-grid {
-  display: block;
-}
-
-.header-your-box {
-  margin-bottom: 50px;
-}
-.header-your-box h3 {
-  border: 2px solid #000;
-  display: inline-block;
-  padding: 15px 15px;
-  font-size: 20px;
-}
-
-.wrapper-view-box {
-  display: flex;
-}
-
-ul.wrapper-items-for-box {
-  display: flex;
-  list-style: none;
-  padding: 0;
-  flex-basis: 60%;
-}
-ul.wrapper-items-for-box > li p {
+#shopify-section-template--15175445217339__banner {
   text-align: center;
 }
 
-.selected-qty {
+.section-build-box #ProductGridContainer > .collection.page-width {
+  max-width: 1400px;
+}
+.section-build-box #ProductGridContainer > .collection.page-width .select-box {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
-  margin-bottom: 20px;
 }
-
-.selected-qty span:first-of-type,
-.selected-qty span:last-of-type {
-  border: 1px solid black;
-  padding: 5px;
-  align-self: baseline;
-  height: 30px;
-  width: 30px;
+.section-build-box #ProductGridContainer > .collection.page-width .select-box > div {
+  border: 2px solid #000;
+  margin: 15px;
+  padding: 2px 30px;
+  cursor: pointer;
+}
+.section-build-box #ProductGridContainer > .collection.page-width .select-box > div.active {
+  background: #dfdfdf;
+}
+.section-build-box #ProductGridContainer > .collection.page-width .wrapper-info-container-box {
+  display: flex;
+  margin-top: 100px;
+}
+.section-build-box #ProductGridContainer > .collection.page-width .wrapper-info-container-box > .items-variants {
+  flex-basis: 80%;
+}
+.section-build-box #ProductGridContainer > .collection.page-width .wrapper-info-container-box > .items-variants > .header-your-box {
+  display: flex;
+}
+.section-build-box #ProductGridContainer > .collection.page-width .wrapper-info-container-box > .items-variants > .header-your-box > h3 {
+  border: 2px solid #000;
+  margin: 15px;
+  padding: 2px 30px;
+  cursor: pointer;
+  padding: 20px;
+}
+.section-build-box #ProductGridContainer > .collection.page-width .wrapper-info-container-box > .items-variants > .header-your-box > h3.active {
+  background: #dfdfdf;
+}
+.section-build-box #ProductGridContainer > .collection.page-width .wrapper-info-container-box > .items-variants ul#product-grid {
+  list-style: none;
+  display: flex;
+  margin-top: 0;
+}
+.section-build-box #ProductGridContainer > .collection.page-width .wrapper-info-container-box > .items-variants ul#product-grid > li {
+  display: none;
+}
+.section-build-box #ProductGridContainer > .collection.page-width .wrapper-info-container-box > .items-variants ul#product-grid > li > .build-box-item > ul.wrapper-items-for-box {
+  list-style: none;
+  display: flex;
+  padding: 0;
+}
+.section-build-box #ProductGridContainer > .collection.page-width .wrapper-info-container-box > .items-variants ul#product-grid > li > .build-box-item > ul.wrapper-items-for-box > li {
+  text-align: center;
+}
+.section-build-box #ProductGridContainer > .collection.page-width .wrapper-info-container-box > .items-variants ul#product-grid > li > .build-box-item > ul.wrapper-items-for-box > li > p {
+  margin: 0;
+  font-weight: 600;
+  font-size: 17px;
+  text-transform: uppercase;
+}
+.section-build-box #ProductGridContainer > .collection.page-width .wrapper-info-container-box > .items-variants ul#product-grid > li > .build-box-item > ul.wrapper-items-for-box > li > .selected-qty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.section-build-box #ProductGridContainer > .collection.page-width .wrapper-info-container-box > .items-variants ul#product-grid > li > .build-box-item > ul.wrapper-items-for-box > li > .selected-qty > span.less, .section-build-box #ProductGridContainer > .collection.page-width .wrapper-info-container-box > .items-variants ul#product-grid > li > .build-box-item > ul.wrapper-items-for-box > li > .selected-qty > span.more {
+  border: 1px solid;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 10px;
+  line-height: initial;
+  height: 25px;
+  width: 25px;
   cursor: pointer;
-  flex-basis: 20%;
 }
-
-.selected-qty span:nth-of-type(2) {
+.section-build-box #ProductGridContainer > .collection.page-width .wrapper-info-container-box > .items-variants ul#product-grid > li > .build-box-item > ul.wrapper-items-for-box > li > .selected-qty > span.less.disabled, .section-build-box #ProductGridContainer > .collection.page-width .wrapper-info-container-box > .items-variants ul#product-grid > li > .build-box-item > ul.wrapper-items-for-box > li > .selected-qty > span.more.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+.section-build-box #ProductGridContainer > .collection.page-width .wrapper-info-container-box > .items-variants ul#product-grid > li > .build-box-item > ul.wrapper-items-for-box > li > .selected-qty > span.qty {
+  padding: 10px;
+  font-weight: 600;
+  font-size: 20px;
+}
+.section-build-box #ProductGridContainer > .collection.page-width .wrapper-info-container-box > .items-variants ul#product-grid > li.active {
+  display: block;
+}
+.section-build-box #ProductGridContainer > .collection.page-width .wrapper-info-container-box > .in-your-box {
   flex-basis: 30%;
-  text-align: center;
 }
-
-.in-your-box {
-  flex-basis: 40%;
+.section-build-box #ProductGridContainer > .collection.page-width .wrapper-info-container-box > .in-your-box > .header-your-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.section-build-box #ProductGridContainer > .collection.page-width .wrapper-info-container-box > .in-your-box > .header-your-box > span {
+  font-weight: 600;
+}
+.section-build-box #ProductGridContainer > .collection.page-width .wrapper-info-container-box > .in-your-box > .btn-totals {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.section-build-box #ProductGridContainer > .collection.page-width .wrapper-info-container-box > .in-your-box > .btn-totals p, .section-build-box #ProductGridContainer > .collection.page-width .wrapper-info-container-box > .in-your-box > .btn-totals span {
+  font-weight: 600;
+}
+.section-build-box #ProductGridContainer > .collection.page-width .wrapper-info-container-box > .in-your-box > .items-added {
+  margin-top: 35px;
+}
+.section-build-box #ProductGridContainer > .collection.page-width .wrapper-info-container-box > .in-your-box > .items-added > .item > .header-item {
+  font-weight: 600;
+  font-size: 20px;
+  text-transform: uppercase;
+  line-height: initial;
+  border-bottom: 1px solid #000;
+  padding-bottom: 10px;
+}
+.section-build-box #ProductGridContainer > .collection.page-width .wrapper-info-container-box > .in-your-box > .items-added > .item > .content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.section-build-box #ProductGridContainer > .collection.page-width .wrapper-info-container-box > .in-your-box > .items-added > .item > .content > p {
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.section-build-box #ProductGridContainer > .collection.page-width .wrapper-info-container-box > .in-your-box > .items-added > .item > .content > .selected-qty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.section-build-box #ProductGridContainer > .collection.page-width .wrapper-info-container-box > .in-your-box > .items-added > .item > .content > .selected-qty > span.less, .section-build-box #ProductGridContainer > .collection.page-width .wrapper-info-container-box > .in-your-box > .items-added > .item > .content > .selected-qty > span.more {
+  border: 1px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
+  line-height: initial;
+  height: 25px;
+  width: 25px;
+  cursor: pointer;
+}
+.section-build-box #ProductGridContainer > .collection.page-width .wrapper-info-container-box > .in-your-box > .items-added > .item > .content > .selected-qty > span.less.disabled, .section-build-box #ProductGridContainer > .collection.page-width .wrapper-info-container-box > .in-your-box > .items-added > .item > .content > .selected-qty > span.more.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+.section-build-box #ProductGridContainer > .collection.page-width .wrapper-info-container-box > .in-your-box > .items-added > .item > .content > .selected-qty > span.qty {
+  padding: 10px;
+  font-weight: 600;
+  font-size: 20px;
 }
 
 /*# sourceMappingURL=component-build-box.css.map */
