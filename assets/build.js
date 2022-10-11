@@ -115,7 +115,7 @@ $(document).ready(function () {
       }
     }
   });
-
+  
   /* LESS ITEMS */
   $(document).on("click", ".selected-qty .less", function () {
     let idToUpdate = $(this).attr("data-variant")    
@@ -192,7 +192,7 @@ $(document).ready(function () {
           'quantity': qty,
             properties: {
               "box of": sizeBoxAdd,
-              'First name': 'Daniel'
+              'Name': 'Daniel'              
           }
         }
         addBox.items.push(newItem)        
