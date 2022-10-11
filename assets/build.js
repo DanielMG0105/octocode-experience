@@ -185,9 +185,9 @@ $(document).ready(function () {
         let qty = $(this).find(".qty").text()
         let newItem = {
           "id" : idVariant,  
-          'quantity': qty
-                properties: {
-            'First name': 'Daniel'
+          'quantity': qty,
+            properties: {
+              'First name': 'Daniel'
           }
         }
         addBox.items.push(newItem)        
