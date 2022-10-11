@@ -199,7 +199,7 @@ $(document).ready(function () {
         $.ajax({
       type: 'POST',
       url: '/cart/add.js',
-      data: JSON.stringify(addBox),
+      body: JSON.stringify(formData),
       success: function(response) {
           console.log("success 1")
       },
