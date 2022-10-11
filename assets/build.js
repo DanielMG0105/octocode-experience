@@ -202,7 +202,7 @@ $(document).ready(function () {
       })
       .then((response) => response.json())
       .then((data) => {
-        window.location.href = 'cart';
+        window.location.href = '/cart';
         console.log(data)
       });
   });
