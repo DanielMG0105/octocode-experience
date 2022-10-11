@@ -202,6 +202,7 @@ $(document).ready(function () {
         body: JSON.stringify(addBox)
         })
       .then(response => {
+        console.log(response)
           return response.json();
       })
       .catch((error) => {
