@@ -10,7 +10,6 @@ $(document).ready(function () {
   });  
   $(".items-variants .header-your-box h3:first").trigger("click")
 
-
   /*  ADD ITEMS */
   $(document).on("click", ".selected-qty .more", function () {
     let idToUpdate = $(this).attr("data-variant")
@@ -126,18 +125,23 @@ $(document).ready(function () {
       $(`.qty-variant-${idToUpdate}`).text(updateQty)
       
 
-        /* UPDATE TOTAL IN YOUR BOX */        
+        /* UPDATE TOTAL IN YOUR BOX */
+        let sizeBoxSmall = 12
         let sizeBoxBig = 24
         let totalInYourBox = $(".in-your-box .curr-added").text()
         totalInYourBox = parseInt(totalInYourBox)
         totalInYourBox = totalInYourBox - 1
         $(".in-your-box .curr-added").text(totalInYourBox)
         if(totalInYourBox < sizeBoxBig){         
-        $(".selected-qty .more").removeClass("disabled")
-      }
+          $(".selected-qty .more").removeClass("disabled")
+        }
+        if(totalInYourBox == sizeBoxSmall || totalInYourBox == sizeBoxBig){
+          $("#addToCartBox").attr("disabled", false)
+        }else{
+          $("#addToCartBox").attr("disabled", true)
+        }
 
-      let idProduct = $(this).attr("data-product")
-      console.log(idProduct)
+      let idProduct = $(this).attr("data-product")   
       if(updateQty < 1){
         $(`.qty-variant-${idToUpdate}`).siblings(".less").addClass("disabled")
         $(`.items-added  .content[data-variant-id="${idToUpdate}"]`).remove()
@@ -159,7 +163,7 @@ $(document).ready(function () {
       $(".header-your-box .size-box").html(sizeBox);
       
       if(itemsAdd > sizeBox){
-        $(".select-box > div[data-val='24']").trigger("click")
+        $(".select-box > div[data-size-box='24']").trigger("click")
       }
       
   });
