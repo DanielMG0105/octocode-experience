@@ -187,6 +187,7 @@ $(document).ready(function () {
           "id" : idVariant,  
           'quantity': qty,
             properties: {
+              "box of": sizeBoxAdd,
               'First name': 'Daniel'
           }
         }
