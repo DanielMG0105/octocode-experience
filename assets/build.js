@@ -11,11 +11,10 @@ $(document).ready(function () {
   $(".items-variants .header-your-box h3:first").trigger("click")
 
 
-  let arrProductos = []
   /*  ADD ITEMS */
   $(document).on("click", ".selected-qty .more", function () {
     let idToUpdate = $(this).attr("data-variant")
-    let updateQty = $(`.qty-variant-${idToUpdate}`).text()
+    let updateQty = $(`.wrapper-items-for-box .qty-variant-${idToUpdate}`).text()
         updateQty = parseInt(updateQty)
         updateQty = updateQty + 1
     if(updateQty > 0){
@@ -47,58 +46,79 @@ $(document).ready(function () {
     let getIdVariant = $(this).parents("li").attr("data-variant")
     let idProduct = $(this).parents("li").attr("data-product")
     let titleProduct =  $(".header-your-box h3.active").text()
-        titleProduct = titleProduct.trim(titleProduct)
+        titleProduct = titleProduct.trim(titleProduct)    
+    let checkTitleProd
 
-        if(checkContentItemsInBox == ''){
-          $(".items-added").append(`
-            <div class="item item-${idProduct}" data-title-prod="${titleProduct}" data-prod-id="${idProduct}" data-variant-id="${getIdVariant}">
-              <div class="header-item">${titleProduct}</div>
-              <div class="content" data-variant-id="${getIdVariant}">
-                <p>${getTitleVariant}</p>
+    if(checkContentItemsInBox == ''){
+      $(".items-added").append(`
+        <div class="item item-${idProduct}" data-title-prod="${titleProduct}" data-prod-id="${idProduct}" data-variant-id="${getIdVariant}">
+          <div class="header-item">${titleProduct}</div>
+          <div class="content" data-variant-id="${getIdVariant}">
+            <p>${getTitleVariant}</p>
+            <div class="selected-qty">
+              <span class="less" data-variant="${getIdVariant}" data-product="${idProduct}">-</span>
+              <span class="qty qty-variant-${getIdVariant}">${updateQty}</span>
+              <span class="more" data-variant="${getIdVariant}">+</span>      
+          </div>
+          </div>
+        </div>
+      `)   
+    }else{      
+      $( ".items-added .item" ).each(function( index, i ) {
+        checkIdProd = $(this).attr("data-prod-id")
+        checkTitleProd = $(this).attr("data-title-prod")
+
+        if(checkTitleProd == titleProduct){
+          return false
+        }
+      });
+
+      if(checkTitleProd == titleProduct){
+        let checkVariantContent 
+        $( ".items-added .item .content" ).each(function( index ){
+          checkVariantContent = $(this).attr("data-variant-id")
+          if(checkVariantContent == getIdVariant){
+            return false
+          }
+        });
+        if(checkVariantContent != getIdVariant){
+          $(`.items-added .item-${idProduct}`).append(`
+          <div class="content" data-variant-id="${getIdVariant}">
+              <p>${getTitleVariant}</p>
+              <div class="selected-qty">
+                  <span class="less" data-variant="${getIdVariant}" data-product="${idProduct}">-</span>
+                  <span class="qty qty-variant-${getIdVariant}">${updateQty}</span>
+                  <span class="more" data-variant="${getIdVariant}">+</span>      
               </div>
             </div>
-         `)
-        }else{
-          let checkIdProd
-          let checkVariantId
-          $( ".items-added .item" ).each(function( index ) {
-            checkIdProd = $(this).attr("data-prod-id")
-            checkVariantId = $(this).attr("data-variant-id")         
-          });
-            
-          if(checkIdProd == idProduct){           
-            let checkVariantContent 
-            $( ".items-added .item .content" ).each(function( index ){
-              checkVariantContent = $(this).attr("data-variant-id")
-            });
-            if(checkVariantContent != getIdVariant){
-              $(`.items-added .item-${idProduct}`).append(`
-              <div class="content" data-variant-id="${getIdVariant}">
-                  <p>${getTitleVariant}</p>
-                </div>
-              `)
-            }
-          }else{
-         
-            $(".items-added").append(`
-              <div class="item item-${idProduct}" data-title-prod="${titleProduct}" data-prod-id="${idProduct}" data-variant-id="${getIdVariant}">
-                <div class="header-item">${titleProduct}</div>
-                <div class="content" data-variant-id="${getIdVariant}">
-                  <p>${getTitleVariant}</p>
-                </div>
-              </div>
           `)
-          }
         }
+      }else{
+        $(".items-added").append(`
+          <div class="item item-${idProduct}" data-title-prod="${titleProduct}" data-prod-id="${idProduct}" data-variant-id="${getIdVariant}">
+            <div class="header-item">${titleProduct}</div>
+            <div class="content" data-variant-id="${getIdVariant}">
+              <p>${getTitleVariant}</p>
+              <div class="selected-qty">
+                  <span class="less" data-variant="${getIdVariant}" data-product="${idProduct}">-</span>
+                  <span class="qty qty-variant-${getIdVariant}">${updateQty}</span>
+                  <span class="more" data-variant="${getIdVariant}">+</span>      
+              </div>
+            </div>
+          </div>
+        `)
+      }
+    }
   });
 
   /* LESS ITEMS */
   $(document).on("click", ".selected-qty .less", function () {
-    let idToUpdate = $(this).attr("data-variant")
-    let updateQty = $(`.qty-variant-${idToUpdate}`).text()      
+    let idToUpdate = $(this).attr("data-variant")    
+    let updateQty = $(`.wrapper-items-for-box .qty-variant-${idToUpdate}`).text()      
         updateQty = parseInt(updateQty)
         updateQty = updateQty - 1        
       $(`.qty-variant-${idToUpdate}`).text(updateQty)
+      
 
         /* UPDATE TOTAL IN YOUR BOX */        
         let sizeBoxBig = 24
@@ -109,9 +129,18 @@ $(document).ready(function () {
         if(totalInYourBox < sizeBoxBig){         
         $(".selected-qty .more").removeClass("disabled")
       }
+
+      let idProduct = $(this).attr("data-product")
+      console.log(idProduct)
       if(updateQty < 1){
         $(`.qty-variant-${idToUpdate}`).siblings(".less").addClass("disabled")
+        $(`.items-added  .content[data-variant-id="${idToUpdate}"]`).remove()
+        if ( !$(`.items-added .item-${idProduct} .content`).length > 0 ) {
+          $(`.items-added .item-${idProduct}`).remove()
+          console.log("ya no hay")
+        }
       }
+     
   });
 
   /* SELECT SIZE BOX */

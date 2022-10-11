@@ -23,7 +23,7 @@
           <img src="{{ variant.featured_media | image_url: width: 165 }}" >
           <p>{{ variant.title }}</p>        
           <div class="selected-qty">
-            <span class="less disabled" data-variant="{{ variant.id }}"">-</span>
+            <span class="less disabled" data-variant="{{ variant.id }}" data-product="{{ card_product.id }}">-</span>
             <span class="qty qty-variant-{{ variant.id }}">0</span>
             <span class="more" data-variant="{{ variant.id }}">+</span>      
           </div>

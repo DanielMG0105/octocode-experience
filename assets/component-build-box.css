@@ -110,13 +110,17 @@
 .section-build-box #ProductGridContainer > .collection.page-width .wrapper-info-container-box > .in-your-box > .items-added {
   margin-top: 35px;
 }
+.section-build-box #ProductGridContainer > .collection.page-width .wrapper-info-container-box > .in-your-box > .items-added > .item {
+  margin-bottom: 30px;
+}
 .section-build-box #ProductGridContainer > .collection.page-width .wrapper-info-container-box > .in-your-box > .items-added > .item > .header-item {
   font-weight: 600;
-  font-size: 20px;
+  font-size: 14px;
   text-transform: uppercase;
   line-height: initial;
   border-bottom: 1px solid #000;
   padding-bottom: 10px;
+  color: #000;
 }
 .section-build-box #ProductGridContainer > .collection.page-width .wrapper-info-container-box > .in-your-box > .items-added > .item > .content {
   display: flex;
@@ -126,6 +130,9 @@
 .section-build-box #ProductGridContainer > .collection.page-width .wrapper-info-container-box > .in-your-box > .items-added > .item > .content > p {
   font-weight: 600;
   text-transform: uppercase;
+  font-size: 20px;
+  margin-top: 5px;
+  color: #000;
 }
 .section-build-box #ProductGridContainer > .collection.page-width .wrapper-info-container-box > .in-your-box > .items-added > .item > .content > .selected-qty {
   display: flex;
