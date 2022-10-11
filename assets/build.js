@@ -176,11 +176,9 @@ $(document).ready(function () {
   $(document).on("click", "#addToCartBox", function () {
     let sizeBoxAdd = $(".select-box > div.active").attr("data-size-box")
     
-  let addBox = {
-       "items" : [
-
-      ]
-    }
+    let addBox = {
+         "items" : []
+      }
 
     $( ".items-added .item .content" ).each(function( index ) {       
         let idVariant = $(this).attr("data-variant-id")
