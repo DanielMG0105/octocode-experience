@@ -157,4 +157,14 @@ $(document).ready(function () {
       }
       
   });
+
+  /* BUTTON RESET */
+  $(document).on("click", "#reset-box", function () {
+    $(".in-your-box .curr-added").html("0")
+    $(".items-added ").empty()
+    $(".selected-qty .qty").html(0)
+    $(".select-box div[data-size-box='12']").trigger("click")
+  });
+
+
 });
