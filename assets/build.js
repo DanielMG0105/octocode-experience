@@ -174,13 +174,13 @@ $(document).ready(function () {
 
   /* BUTTON ADD TO CART */
   $(document).on("click", "#addToCartBox", function () {
-    let sizeBoxAdd = $(".select-box > div.active").attr("data-size-box")
-    
+    $(this).text("Adding ...")
+    let sizeBoxAdd = $(".select-box > div.active").attr("data-size-box")    
     let addBox = {
          "items" : []
       }
 
-    $( ".items-added .item .content" ).each(function( index ) {       
+    $( ".items-added .item .content" ).each(function( index ) { 
         let idVariant = $(this).attr("data-variant-id")
         let qty = $(this).find(".qty").text()
         let newItem = {
@@ -201,7 +201,10 @@ $(document).ready(function () {
         body: JSON.stringify(addBox)
       })
       .then((response) => response.json())
-      .then((data) => console.log(data));
+      .then((data) => {
+        window.location.href = 'cart';
+        console.log(data)
+      });
   });
 
 });
