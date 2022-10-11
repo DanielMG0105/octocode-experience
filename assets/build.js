@@ -189,15 +189,6 @@ $(document).ready(function () {
         }
         addBox.items.push(newItem)        
       });
-
-      console.log(addBox)
-
-      let formData = {
-       'items': [{
-        'id': 40864743817275,
-        'quantity': 2
-        }]
-      };
       fetch(window.Shopify.routes.root + 'cart/add.js', {
         method: 'POST',
         headers: {
