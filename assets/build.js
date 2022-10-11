@@ -11,6 +11,7 @@ $(document).ready(function () {
   $(".items-variants .header-your-box h3:first").trigger("click")
 
 
+  let arrProductos = []
   /*  ADD ITEMS */
   $(document).on("click", ".selected-qty .more", function () {
     let idToUpdate = $(this).attr("data-variant")
@@ -28,17 +29,67 @@ $(document).ready(function () {
     let totalInYourBox = $(".in-your-box .curr-added").text()
         totalInYourBox = parseInt(totalInYourBox)
         totalInYourBox = totalInYourBox + 1
-        $(".in-your-box .curr-added").text(totalInYourBox)
+    $(".in-your-box .curr-added").text(totalInYourBox)
 
-        if(totalInYourBox > sizeBoxSmall){
-          $(".select-box div[data-size-box='24']").trigger("click")
+    if(totalInYourBox > sizeBoxSmall){
+      $(".select-box div[data-size-box='24']").trigger("click")
+    }
+    if(totalInYourBox >= sizeBoxBig){
+      $(".in-your-box .curr-added").text(sizeBoxBig)
+      $(".selected-qty .more").addClass("disabled")
+    }
+
+    /* APPEND IN SECTION YOUR BOX ITEMS */
+    let checkContentItemsInBox = $(".items-added").html()
+        checkContentItemsInBox = checkContentItemsInBox.trim(checkContentItemsInBox)
+
+    let getTitleVariant = $(this).parents("li").attr("data-title")
+    let getIdVariant = $(this).parents("li").attr("data-variant")
+    let idProduct = $(this).parents("li").attr("data-product")
+    let titleProduct =  $(".header-your-box h3.active").text()
+        titleProduct = titleProduct.trim(titleProduct)
+
+        if(checkContentItemsInBox == ''){
+          $(".items-added").append(`
+            <div class="item item-${idProduct}" data-title-prod="${titleProduct}" data-prod-id="${idProduct}" data-variant-id="${getIdVariant}">
+              <div class="header-item">${titleProduct}</div>
+              <div class="content" data-variant-id="${getIdVariant}">
+                <p>${getTitleVariant}</p>
+              </div>
+            </div>
+         `)
+        }else{
+          let checkIdProd
+          let checkVariantId
+          $( ".items-added .item" ).each(function( index ) {
+            checkIdProd = $(this).attr("data-prod-id")
+            checkVariantId = $(this).attr("data-variant-id")         
+          });
+            
+          if(checkIdProd == idProduct){           
+            let checkVariantContent 
+            $( ".items-added .item .content" ).each(function( index ){
+              checkVariantContent = $(this).attr("data-variant-id")
+            });
+            if(checkVariantContent != getIdVariant){
+              $(`.items-added .item-${idProduct}`).append(`
+              <div class="content" data-variant-id="${getIdVariant}">
+                  <p>${getTitleVariant}</p>
+                </div>
+              `)
+            }
+          }else{
+         
+            $(".items-added").append(`
+              <div class="item item-${idProduct}" data-title-prod="${titleProduct}" data-prod-id="${idProduct}" data-variant-id="${getIdVariant}">
+                <div class="header-item">${titleProduct}</div>
+                <div class="content" data-variant-id="${getIdVariant}">
+                  <p>${getTitleVariant}</p>
+                </div>
+              </div>
+          `)
+          }
         }
-        if(totalInYourBox >= sizeBoxBig){
-          $(".in-your-box .curr-added").text(sizeBoxBig)
-          $(".selected-qty .more").addClass("disabled")
-        }
-
-
   });
 
   /* LESS ITEMS */
