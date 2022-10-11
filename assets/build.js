@@ -209,6 +209,24 @@ $(document).ready(function () {
           console.error('Error:', error);
       });
 
+
+        $.ajax({
+      type: 'POST',
+      url: '/cart/add.js',
+      data: JSON.stringify(addBox),
+      success: function(response) {
+          console.log("success 1")
+      },
+      error: function(response) {
+        if(response.status == 200){
+          console.log("succeess")
+        }else{
+          console.log("error")
+          console.log(response.responseText)
+        }
+      }
+    });
+
   });
 
 });
