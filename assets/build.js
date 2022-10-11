@@ -205,9 +205,7 @@ $(document).ready(function () {
         },
         body: JSON.stringify(formData)
       })
-      .then(response => {
-        return response.json();
-      })
+      .then((response) => response.json())
       .then((data) => console.log(data));
       .catch((error) => {
         console.error('Error:', error);
