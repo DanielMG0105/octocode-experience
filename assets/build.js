@@ -38,6 +38,12 @@ $(document).ready(function () {
       $(".selected-qty .more").addClass("disabled")
     }
 
+    if(totalInYourBox == sizeBoxSmall || totalInYourBox == sizeBoxBig){
+      $("#addToCartBox").attr("disabled", false)
+    }else{
+      $("#addToCartBox").attr("disabled", true)
+    }
+
     /* APPEND IN SECTION YOUR BOX ITEMS */
     let checkContentItemsInBox = $(".items-added").html()
         checkContentItemsInBox = checkContentItemsInBox.trim(checkContentItemsInBox)
@@ -166,5 +172,37 @@ $(document).ready(function () {
     $(".select-box div[data-size-box='12']").trigger("click")
   });
 
+  /* BUTTON ADD TO CART */
+  $(document).on("click", "#addToCartBox", function () {
+    let sizeBoxAdd = $(".select-box > div.active").attr("data-size-box")
+    
+  
+
+
+
+    let formData = {
+      'items': [{
+       'id': 40864743817275,
+       'quantity': 2
+       }]
+     };
+     fetch(window.Shopify.routes.root + 'cart/add.js', {
+       method: 'POST',
+       headers: {
+         'Content-Type': 'application/json'
+       },
+       body: JSON.stringify(formData)
+     })
+     .then(response => {
+       console.log(response)
+       return response.json();
+     })
+     .catch((error) => {
+       console.error('Error:', error);
+     })
+
+
+
+  });
 
 });
