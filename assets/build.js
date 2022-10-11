@@ -203,7 +203,7 @@ $(document).ready(function () {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(addBox)
       })
       .then((response) => response.json())
       .then((data) => console.log(data));
