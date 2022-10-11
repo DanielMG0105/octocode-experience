@@ -186,6 +186,9 @@ $(document).ready(function () {
         let newItem = {
           "id" : idVariant,  
           'quantity': qty
+                properties: {
+            'First name': 'Daniel'
+          }
         }
         addBox.items.push(newItem)        
       });
