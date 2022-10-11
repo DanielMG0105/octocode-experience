@@ -176,32 +176,23 @@ $(document).ready(function () {
   $(document).on("click", "#addToCartBox", function () {
     let sizeBoxAdd = $(".select-box > div.active").attr("data-size-box")
     
-  
+  let addBox = {
+       "items" : [
 
+      ]
+    }
 
+    $( ".items-added .item .content" ).each(function( index ) {       
+        let idVariant = $(this).attr("data-variant-id")
+        let qty = $(this).find(".qty").text()
+        let newItem = {
+          "id" : idVariant,  
+          'quantity': qty
+        }
+        addBox.items.push(newItem)        
+      });
 
-    let formData = {
-      'items': [{
-       'id': 40864743817275,
-       'quantity': 2
-       }]
-     };
-     fetch(window.Shopify.routes.root + 'cart/add.js', {
-       method: 'POST',
-       headers: {
-         'Content-Type': 'application/json'
-       },
-       body: JSON.stringify(formData)
-     })
-     .then(response => {
-       console.log(response)
-       return response.json();
-     })
-     .catch((error) => {
-       console.error('Error:', error);
-     })
-
-
+      console.log(addBox)
 
   });
 
