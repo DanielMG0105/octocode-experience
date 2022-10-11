@@ -192,24 +192,25 @@ $(document).ready(function () {
 
       console.log(addBox)
 
-
-
-        $.ajax({
-      type: 'POST',
-      url: '/cart/add.js',
-      body: JSON.stringify(addBox),
-      success: function(response) {
-          console.log("success 1")
-      },
-      error: function(response) {
-        if(response.status == 200){
-          console.log("succeess")
-        }else{
-          console.log("error")
-          console.log(response.responseText)
-        }
-      }
-    });
+      let formData = {
+       'items': [{
+        'id': 40864743817275,
+        'quantity': 2
+        }]
+      };
+      fetch(window.Shopify.routes.root + 'cart/add.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      })
+      .then(response => {
+        return response.json();
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
 
   });
 
