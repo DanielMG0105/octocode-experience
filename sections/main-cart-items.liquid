@@ -305,6 +305,8 @@
 
       {%- for property in item.properties -%}
         console.log("{{ property }}");
+        console.log("{{ property.first }}");
+        console.log("{{ property.last }}");
       {%- endfor -%}
 
     
