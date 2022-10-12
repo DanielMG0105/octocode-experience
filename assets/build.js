@@ -1,5 +1,20 @@
 $(document).ready(function () {
- 
+  loadProducts()
+  /* SELECT SIZE BOX */
+  $(document).on("click", ".select-box > div", function () {
+    $(".select-box > div").removeClass("active");
+    $(this).addClass("active");
+    let sizeBox = $(this).attr("data-size-box");
+    let itemsAdd = $(".header-your-box .curr-added").text()
+      itemsAdd = parseInt(itemsAdd)
+      $(".header-your-box .size-box").html(sizeBox);
+      
+      if(itemsAdd > sizeBox){
+        $(".select-box > div[data-size-box='24']").trigger("click")
+      }
+      
+  });
+
   /* SELECT PRODUCT */
   $(document).on("click", ".items-variants .header-your-box h3", function () {
     $(".items-variants .header-your-box h3").removeClass("active")    
@@ -12,10 +27,19 @@ $(document).ready(function () {
 
   /*  ADD ITEMS */
   $(document).on("click", ".selected-qty .more", function () {
+    let inventory = $(this).attr("data-inventory")
+    let available = true
     let idToUpdate = $(this).attr("data-variant")
     let updateQty = $(`.wrapper-items-for-box .qty-variant-${idToUpdate}`).text()
         updateQty = parseInt(updateQty)
-        updateQty = updateQty + 1
+
+        if(updateQty == inventory){
+          alert("pasaste inventario")
+          available = false
+        }else{
+          updateQty = updateQty + 1
+        }
+
     if(updateQty > 0){
       $(`.qty-variant-${idToUpdate}`).siblings(".less").removeClass("disabled")
     }
@@ -26,8 +50,10 @@ $(document).ready(function () {
     let sizeBoxBig = 24
     let totalInYourBox = $(".in-your-box .curr-added").text()
         totalInYourBox = parseInt(totalInYourBox)
-        totalInYourBox = totalInYourBox + 1
-    $(".in-your-box .curr-added").text(totalInYourBox)
+        if(available){
+          totalInYourBox = totalInYourBox + 1
+          $(".in-your-box .curr-added").text(totalInYourBox)
+        }
 
     if(totalInYourBox > sizeBoxSmall){
       $(".select-box div[data-size-box='24']").trigger("click")
@@ -63,7 +89,7 @@ $(document).ready(function () {
             <div class="selected-qty">
               <span class="less" data-variant="${getIdVariant}" data-product="${idProduct}">-</span>
               <span class="qty qty-variant-${getIdVariant}">${updateQty}</span>
-              <span class="more" data-variant="${getIdVariant}">+</span>      
+              <span class="more" data-variant="${getIdVariant}" data-inventory="${inventory}">+</span>      
           </div>
           </div>
         </div>
@@ -93,7 +119,7 @@ $(document).ready(function () {
               <div class="selected-qty">
                   <span class="less" data-variant="${getIdVariant}" data-product="${idProduct}">-</span>
                   <span class="qty qty-variant-${getIdVariant}">${updateQty}</span>
-                  <span class="more" data-variant="${getIdVariant}">+</span>      
+                  <span class="more" data-variant="${getIdVariant}" data-inventory="${inventory}">+</span>      
               </div>
             </div>
           `)
@@ -107,7 +133,7 @@ $(document).ready(function () {
               <div class="selected-qty">
                   <span class="less" data-variant="${getIdVariant}" data-product="${idProduct}">-</span>
                   <span class="qty qty-variant-${getIdVariant}">${updateQty}</span>
-                  <span class="more" data-variant="${getIdVariant}">+</span>      
+                  <span class="more" data-variant="${getIdVariant}" data-inventory="${inventory}">+</span>      
               </div>
             </div>
           </div>
@@ -115,7 +141,7 @@ $(document).ready(function () {
       }
     }
   });
-  
+
   /* LESS ITEMS */
   $(document).on("click", ".selected-qty .less", function () {
     let idToUpdate = $(this).attr("data-variant")    
@@ -146,26 +172,10 @@ $(document).ready(function () {
         $(`.qty-variant-${idToUpdate}`).siblings(".less").addClass("disabled")
         $(`.items-added  .content[data-variant-id="${idToUpdate}"]`).remove()
         if ( !$(`.items-added .item-${idProduct} .content`).length > 0 ) {
-          $(`.items-added .item-${idProduct}`).remove()
-          console.log("ya no hay")
+          $(`.items-added .item-${idProduct}`).remove()          
         }
       }
      
-  });
-
-  /* SELECT SIZE BOX */
-  $(document).on("click", ".select-box > div", function () {
-    $(".select-box > div").removeClass("active");
-    $(this).addClass("active");
-    let sizeBox = $(this).attr("data-size-box");
-    let itemsAdd = $(".header-your-box .curr-added").text()
-      itemsAdd = parseInt(itemsAdd)
-      $(".header-your-box .size-box").html(sizeBox);
-      
-      if(itemsAdd > sizeBox){
-        $(".select-box > div[data-size-box='24']").trigger("click")
-      }
-      
   });
 
   /* BUTTON RESET */
@@ -184,15 +194,19 @@ $(document).ready(function () {
          "items" : []
       }
 
+      let dt = new Date();
+      let id = dt.getHours() + "" + dt.getMinutes() + "" + dt.getSeconds();
+
     $( ".items-added .item .content" ).each(function( index ) { 
         let idVariant = $(this).attr("data-variant-id")
         let qty = $(this).find(".qty").text()
         let newItem = {
           "id" : idVariant,  
           'quantity': qty,
+            selling_plan: 6717605,            
             properties: {
-              "box of": sizeBoxAdd,
-              'Name': 'Daniel'              
+              "boxSize": sizeBoxAdd, 
+              "idBox" : id
           }
         }
         addBox.items.push(newItem)        
@@ -210,5 +224,28 @@ $(document).ready(function () {
         console.log(data)
       });
   });
-
 });
+
+/* LOAD PRODUCTS  */
+const loadProducts = () => {
+
+  let loadCurrAdded = 0
+  let currSizeBox = $(".in-your-box .size-box").text()
+      currSizeBox = parseInt(currSizeBox)
+
+  jQuery.getJSON('/cart.js', function(cart) {
+    // now have access to Shopify cart object   
+    $.each( cart.items, function( key, value ) {      
+      if(value.properties.idBox){        
+        $(`.qty-variant-${value.variant_id}`).html(value.quantity)
+        loadCurrAdded = loadCurrAdded + value.quantity
+      }
+    });
+    $(".in-your-box .curr-added").text(loadCurrAdded)
+
+    if(loadCurrAdded == currSizeBox){
+      $("#addToCartBox").attr("disabled", false)
+    }
+
+  });
+}
