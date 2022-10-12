@@ -314,9 +314,8 @@
 
             
 
-            let product_title = `{{item.product.title}}} - ${color}`;
-            console.log(product_title)
-            boxes[{{property.last}}].push({title:product_title);
+  
+            boxes[{{property.last}}].push({title:"{{item.product.title}}}");
         {% endif %}
       {%- endfor -%}
 
