@@ -308,7 +308,7 @@
           console.log("{{ property.first }}");
           console.log("{{ property.last }}");
         {% if property.first == "idBox" %}
-            boxes[property.last].push("product",item.name)
+            boxes[property.last].push("product",item.title);
         {% endif %}
       {%- endfor -%}
 
