@@ -313,7 +313,12 @@
             boxes[{{property.last}}] =  boxes[{{property.last}}] || [];
 
             
-
+            let color =  "";
+            {%- for option in item.options_with_values -%}
+              {% if option.name == "Color" %}
+                  color =  "{{ option.value }}";
+              {% endif %}
+            {%- endfor -%}
   
             boxes[{{property.last}}].push({title:"{{item.product.title}}"});
         {% endif %}
