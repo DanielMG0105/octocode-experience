@@ -323,7 +323,8 @@
               {% endif %}
             {%- endfor -%}
             product_title = `{{item.product.title}}  - ${color}`
-            boxes[{{property.last}}].push({title:product_title});
+          
+            boxes[{{property.last}}].push({title:product_title, id: {{item.id}}});
         {% endif %}
       {%- endfor -%}
 
