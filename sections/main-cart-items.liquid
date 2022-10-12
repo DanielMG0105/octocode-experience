@@ -297,6 +297,11 @@
   </form>
 </cart-items>
 
+<div id="custom_cart">
+
+</div>
+  
+                        
 
 <script>
 
@@ -330,8 +335,15 @@
 
   $.each(boxes,function(index,items){
     console.log(index)
+
+    $("·custom_cart").append(`<p>Caja:<p> ${index}`)
+    
     $.each(items,function(index2,item){
        console.log(item)
+
+      
+    
+      
     
     })
   })
