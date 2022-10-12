@@ -311,7 +311,7 @@
           console.log("{{ property.last }}");
         {% if property.first == "idBox" %}
             boxes[{{property.last}}] =  boxes[{{property.last}}] || [];
-            boxes[{{property.last}}].push({title:"TEST"});
+            boxes[{{property.last}}].push({title:"{{item.product.title}}}");
         {% endif %}
       {%- endfor -%}
 
