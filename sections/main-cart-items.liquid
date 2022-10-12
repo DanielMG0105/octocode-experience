@@ -302,9 +302,7 @@
 
   let boxes = [];
 
-  boxes.push({test:"info"});
-  console.log(boxes)
-    {% comment %}
+  
   {%- for item in cart.items -%}
 
       {%- for property in item.properties -%}
@@ -312,7 +310,7 @@
           console.log("{{ property.first }}");
           console.log("{{ property.last }}");
         {% if property.first == "idBox" %}
-            boxes[{{property.last}}].push({title,"{{ item.product.title | escape }}"});
+            boxes[{{property.last}}].push({title:"{{ item.product.title | escape }}"});
         {% endif %}
       {%- endfor -%}
 
@@ -320,8 +318,7 @@
 
   {% endfor %}
 
-  {% endcomment %}
-
+  console.log(boxes)
 </script>
                           
 
