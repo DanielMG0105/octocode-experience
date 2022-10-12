@@ -301,6 +301,10 @@
 <script>
 
   let boxes = [];
+
+  boxes.push({test,"info"});
+  console.log(boxes)
+    {% comment %}
   {%- for item in cart.items -%}
 
       {%- for property in item.properties -%}
@@ -315,6 +319,8 @@
     
 
   {% endfor %}
+
+  {% endcomment %}
 
 </script>
                           
