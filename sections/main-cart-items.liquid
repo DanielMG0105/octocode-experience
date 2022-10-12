@@ -311,7 +311,16 @@
           console.log("{{ property.last }}");
         {% if property.first == "idBox" %}
             boxes[{{property.last}}] =  boxes[{{property.last}}] || [];
-            boxes[{{property.last}}].push({title:"{{item.product.title}}}");
+
+            let color =  "";
+            {%- for option in item.options_with_values -%}
+              {% if option.name == "Color" %}
+                  color =  "{{ option.value }}";
+              {% endif %}
+            {%- endfor -%}
+
+            let product_title = `{{item.product.title}}} - ${color}`;
+            boxes[{{property.last}}].push({title:product_title);
         {% endif %}
       {%- endfor -%}
 
