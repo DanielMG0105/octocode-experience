@@ -329,12 +329,16 @@
 
   {% endfor %}
 
+  function myFunction(item, index, arr) {
+    console.log(index)
+    console.log(item)
+  }
 
-  boxes.forEach(item, index,function(){
-
-      console.log(index)
-  })
+  boxes.forEach(myFunction)
   
+
+  
+
 
   
 
