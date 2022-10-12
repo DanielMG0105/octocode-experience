@@ -310,7 +310,7 @@
           console.log("{{ property.first }}");
           console.log("{{ property.last }}");
         {% if property.first == "idBox" %}
-            boxes[{{property.last}}].push({title:"{{ item.product.title | escape }}"});
+            boxes[{{property.last}}].push({title:"TEST"});
         {% endif %}
       {%- endfor -%}
 
