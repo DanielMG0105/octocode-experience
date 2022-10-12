@@ -332,22 +332,21 @@
   {% endfor %}
 
 
-
+  let caja_html = "";
   $.each(boxes,function(index,items){
     console.log(index)
 
-    $("#custom_cart").append(`<p>Caja:<p> ${index}`)
-    
+    caja_html = `<p>Caja:<p> ${index}`;
+    caja_html += "<ul>";
     $.each(items,function(index2,item){
        console.log(item)
         $("#custom_cart").append(`<li>${item.title}<li>`)
-      
-    
-      
-    
     })
+    caja_html += "</ul>";
   })
 
+
+  $("#custom_cart").(caja_html);
   
 
 
