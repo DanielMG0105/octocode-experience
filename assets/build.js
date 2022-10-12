@@ -1,5 +1,4 @@
 $(document).ready(function () {
-  loadProducts()
   /* SELECT SIZE BOX */
   $(document).on("click", ".select-box > div", function () {
     $(".select-box > div").removeClass("active");
