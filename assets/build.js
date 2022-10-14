@@ -1,4 +1,5 @@
 $(document).ready(function () {
+  leerCookie("idBox")
   /* SELECT SIZE BOX */
   $(document).on("click", ".select-box > div", function () {
     $(".select-box > div").removeClass("active");
@@ -176,7 +177,6 @@ $(document).ready(function () {
       }
      
   });
-
   /* BUTTON RESET */
   $(document).on("click", "#reset-box", function () {
     $(".in-your-box .curr-added").html("0")
@@ -184,19 +184,19 @@ $(document).ready(function () {
     $(".selected-qty .qty").html(0)
     $(".select-box div[data-size-box='12']").trigger("click")
   });
-
   /* BUTTON ADD TO CART */
-  $(document).on("click", "#addToCartBox", function () {
+  $(document).on("click", "#addToCartBox", async function () {
     $(this).text("Adding ...")
+    let idExist =  $(this).attr("data-box-updated")
+    let action = $(this).attr("data-value")
     let sizeBoxAdd = $(".select-box > div.active").attr("data-size-box")    
-    let addBox = {
-         "items" : []
-      }
+    let addBox = {"items" : []}
+    let itemsDelete = {}
 
-      let dt = new Date();
-      let id = dt.getHours() + "" + dt.getMinutes() + "" + dt.getSeconds();
+    let dt = new Date();
+    let id = dt.getHours() + "" + dt.getMinutes() + "" + dt.getSeconds();
 
-    $( ".items-added .item .content" ).each(function( index ) { 
+    $(".items-added .item .content" ).each(function( index ) { 
         let idVariant = $(this).attr("data-variant-id")
         let qty = $(this).find(".qty").text()
         let newItem = {
@@ -209,7 +209,35 @@ $(document).ready(function () {
           }
         }
         addBox.items.push(newItem)        
+    });
+
+    if(action == 'update'){
+      console.log("is updated")
+      id = idExist
+      $.each(addBox.items, function(index, value) {
+        console.log(value.id);
+        itemsDelete[value.id] = 0
       });
+      console.log(itemsDelete)
+      await jQuery.post(window.Shopify.routes.root + 'cart/update.js', {
+        updates: itemsDelete
+      });
+      console.log("despues de borrar")
+      await fetch(window.Shopify.routes.root + 'cart/add.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(addBox)
+      })
+      .then((response) => response.json())
+      .then((data) => {
+        window.location.href = '/cart';
+        console.log(data)
+        console.log("agregando")
+      });
+    }else{
+      console.log("is new box")
       fetch(window.Shopify.routes.root + 'cart/add.js', {
         method: 'POST',
         headers: {
@@ -222,22 +250,45 @@ $(document).ready(function () {
         window.location.href = '/cart';
         console.log(data)
       });
+    }     
+  });
+/*  REMOVE BOX CART */
+  $(document).on("click", ".removeBox", function () {
+    let boxRemove = $(this).attr("data-box-remove")
+    let itemsDelete = {}
+    $(`#box-${boxRemove} .list-box-${boxRemove} li`).each(function( index ) {
+      let idVariantRemove = $(this).attr("data-variant") 
+      itemsDelete[idVariantRemove] = 0
+    });
+    jQuery.post(window.Shopify.routes.root + 'cart/update.js', {
+      updates: itemsDelete
+    });
+    setTimeout(function(){
+      console.log("remove")
+      window.location.href = '/cart';
+    },500)  
+  });
+  /* EDIT BOX CART */
+  $(document).on("click", ".editBox", function () {
+    let idBox = $(this).attr("data-id-box")   
+    crearCookie("idBox", idBox)
+    window.location.href = '/collections/build-a-box';
   });
 });
 
 /* LOAD PRODUCTS  */
-const loadProducts = () => {
-
+const loadProducts = (idBox) => {
   let loadCurrAdded = 0
+  let activeItemsAdded = 0
   let currSizeBox = $(".in-your-box .size-box").text()
-      currSizeBox = parseInt(currSizeBox)
-
-  jQuery.getJSON('/cart.js', function(cart) {
-    // now have access to Shopify cart object   
-    $.each( cart.items, function( key, value ) {      
-      if(value.properties.idBox){        
-        $(`.qty-variant-${value.variant_id}`).html(value.quantity)
+      currSizeBox = parseInt(currSizeBox)     
+  jQuery.getJSON('/cart.js', function(cart) {    
+    $.each( cart.items, function( key, value ) {                 
+      if(value.properties.idBox == idBox){
+        activeItemsAdded = value.quantity - 1
+        $(`.qty-variant-${value.variant_id}`).html(activeItemsAdded)
         loadCurrAdded = loadCurrAdded + value.quantity
+        $(`.qty-variant-${value.variant_id}`).siblings(".more").trigger("click")
       }
     });
     $(".in-your-box .curr-added").text(loadCurrAdded)
@@ -245,6 +296,27 @@ const loadProducts = () => {
     if(loadCurrAdded == currSizeBox){
       $("#addToCartBox").attr("disabled", false)
     }
-
   });
+  $("#addToCartBox").attr("data-box-updated", idBox)
+  $("#addToCartBox").attr("data-value", "update")
 }
+/* DELETE COOKIE */
+const eliminarCookie = function (key) {  
+  return document.cookie = key + '=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
+/* READ COOKIE */
+const leerCookie = async (key) => {
+  keyValue = document.cookie.match(new RegExp('(^| )' + key + '=([^;]+)'));  
+  if (keyValue) {    
+    loadProducts(keyValue[2])
+    return keyValue[2];
+  }
+};
+/* CREATE COOKIE */
+const crearCookie = (key, value) => {  
+  expires = new Date();
+  expires.setTime(expires.getTime() + 86400000); // Tiempo de expiración
+  cookie = key + "=" + value + ";path=/;expires=" + expires.toUTCString();
+  console.log("creando cookie")
+  return (document.cookie = cookie);
+};

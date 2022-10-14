@@ -180,4 +180,53 @@ h1.collection-hero__title {
   font-size: 20px;
 }
 
+/* STYLES CART */
+.cart-items tbody > .cart-item-box > .cart-item__details > h2 {
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.cart-items tbody > .cart-item-box > .cart-item__details > ul {
+  padding: 0;
+  list-style: none;
+}
+.cart-items tbody > .cart-item-box > .cart-item__details > ul > p {
+  margin: 0;
+  margin-bottom: 5px;
+  font-weight: 600;
+  font-size: 17px;
+}
+.cart-items tbody > .cart-item-box > .cart-item__details > ul > li {
+  margin-bottom: 5px;
+  font-size: 15px;
+}
+.cart-items tbody > .cart-item-box > .cart-item__quantity {
+  display: flex;
+  align-items: center;
+}
+.cart-items tbody > .cart-item-box > .cart-item__quantity span {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+  cursor: pointer;
+}
+.cart-items tbody > .cart-item-box > .cart-item__quantity span svg {
+  width: 15px;
+}
+.cart-items tbody > .cart-item-box > .cart-item__quantity > span.editBox {
+  border: 1px solid #000;
+  line-height: initial;
+  padding: 5px 15px;
+  transition: all 0.2s ease-in-out;
+}
+.cart-items tbody > .cart-item-box > .cart-item__quantity > span.editBox:hover {
+  background: #000;
+  color: #fff;
+}
+.cart-items tbody > .cart-item-box > .cart-item__quantity > .removeBox {
+  transition: all 0.2s ease-in-out;
+}
+.cart-items tbody > .cart-item-box > .cart-item__quantity > .removeBox:hover {
+  opacity: 0.7;
+}
+
 /*# sourceMappingURL=component-build-box.css.map */
