@@ -15,7 +15,6 @@ $(document).ready(function () {
       }
       
   });
-
   /* SELECT PRODUCT */
   $(document).on("click", ".items-variants .header-your-box h3", function () {
     $(".items-variants .header-your-box h3").removeClass("active")    
@@ -25,7 +24,6 @@ $(document).ready(function () {
     $(`#list-${showTab}`).addClass("active")
   });  
   $(".items-variants .header-your-box h3:first").trigger("click")
-
   /*  ADD ITEMS */
   $(document).on("click", ".selected-qty .more", function () {
     let inventory = $(this).attr("data-inventory")
@@ -142,7 +140,6 @@ $(document).ready(function () {
       }
     }
   });
-
   /* LESS ITEMS */
   $(document).on("click", ".selected-qty .less", function () {
     let idToUpdate = $(this).attr("data-variant")    
@@ -217,7 +214,7 @@ $(document).ready(function () {
 
     if(action == 'update'){
       console.log("is updated")
-      id = idExist            
+      id = idExist
       await jQuery.post(window.Shopify.routes.root + 'cart/update.js', {
         updates: saveCarts
       });
@@ -248,7 +245,8 @@ $(document).ready(function () {
       .then((data) => {
         window.location.href = '/cart';        
       });
-    }     
+    }
+     eliminarCookie("idBox")
   });
 /*  REMOVE BOX CART */
   $(document).on("click", ".removeBox", function () {
@@ -298,7 +296,6 @@ const loadProducts = (idBox) => {
   });
   $("#addToCartBox").attr("data-box-updated", idBox)
   $("#addToCartBox").attr("data-value", "update")
-  //eliminarCookie("idBox")
 }
 /* DELETE COOKIE */
 const eliminarCookie = function (key) {  
