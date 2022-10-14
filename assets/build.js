@@ -1,3 +1,4 @@
+let saveCarts = {}
 $(document).ready(function () {
   leerCookie("idBox")
   /* SELECT SIZE BOX */
@@ -186,15 +187,18 @@ $(document).ready(function () {
   });
   /* BUTTON ADD TO CART */
   $(document).on("click", "#addToCartBox", async function () {
-    $(this).text("Adding ...")
-    let idExist =  $(this).attr("data-box-updated")
+    $(this).text("Adding ...")   
+    let idExist =  $(this).attr("data-box-updated")    
     let action = $(this).attr("data-value")
     let sizeBoxAdd = $(".select-box > div.active").attr("data-size-box")    
     let addBox = {"items" : []}
-    let itemsDelete = {}
-
     let dt = new Date();
-    let id = dt.getHours() + "" + dt.getMinutes() + "" + dt.getSeconds();
+    let id = ""
+    if(idExist){
+      id = idExist
+    }else{
+      id = dt.getHours() + "" + dt.getMinutes() + "" + dt.getSeconds();
+    }
 
     $(".items-added .item .content" ).each(function( index ) { 
         let idVariant = $(this).attr("data-variant-id")
@@ -213,14 +217,9 @@ $(document).ready(function () {
 
     if(action == 'update'){
       console.log("is updated")
-      id = idExist
-      $.each(addBox.items, function(index, value) {
-        console.log(value.id);
-        itemsDelete[value.id] = 0
-      });
-      console.log(itemsDelete)
+      id = idExist            
       await jQuery.post(window.Shopify.routes.root + 'cart/update.js', {
-        updates: itemsDelete
+        updates: saveCarts
       });
       console.log("despues de borrar")
       await fetch(window.Shopify.routes.root + 'cart/add.js', {
@@ -247,8 +246,7 @@ $(document).ready(function () {
       })
       .then((response) => response.json())
       .then((data) => {
-        window.location.href = '/cart';
-        console.log(data)
+        window.location.href = '/cart';        
       });
     }     
   });
@@ -282,13 +280,14 @@ const loadProducts = (idBox) => {
   let activeItemsAdded = 0
   let currSizeBox = $(".in-your-box .size-box").text()
       currSizeBox = parseInt(currSizeBox)     
-  jQuery.getJSON('/cart.js', function(cart) {    
-    $.each( cart.items, function( key, value ) {                 
+  jQuery.getJSON('/cart.js', function(cart) {          
+    $.each( cart.items, function( key, value ) {
       if(value.properties.idBox == idBox){
         activeItemsAdded = value.quantity - 1
         $(`.qty-variant-${value.variant_id}`).html(activeItemsAdded)
         loadCurrAdded = loadCurrAdded + value.quantity
         $(`.qty-variant-${value.variant_id}`).siblings(".more").trigger("click")
+        saveCarts[value.variant_id] = 0
       }
     });
     $(".in-your-box .curr-added").text(loadCurrAdded)
@@ -299,9 +298,11 @@ const loadProducts = (idBox) => {
   });
   $("#addToCartBox").attr("data-box-updated", idBox)
   $("#addToCartBox").attr("data-value", "update")
+  //eliminarCookie("idBox")
 }
 /* DELETE COOKIE */
 const eliminarCookie = function (key) {  
+  console.log("borrando cookie")
   return document.cookie = key + '=;path=/;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
 /* READ COOKIE */

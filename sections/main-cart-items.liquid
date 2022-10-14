@@ -61,10 +61,11 @@
 
             <tbody>
               {% assign isBox = false %}
-              {%- for item in cart.items -%}                
+              {%- for item in cart.items -%}  
+               {% assign isBox = falso %}              
                     {% for property in item.properties %}                 
                       {% if property.first == "idBox" %}
-                         {% assign isBox = true %}    
+                         {% assign isBox = true %}                         
                         {% endif %}                 
                     {% endfor %}    
                 {% unless isBox %}
@@ -377,9 +378,6 @@ document.addEventListener("DOMContentLoaded", () => {
       </tr>
     `)
   
-   // caja_html += `<p>Caja:<p> ${index}`;
-   // caja_html += "<ul>"; 
-
     $.each(items, function(index2, item){  
           let calTotal = item.priceTotal
            calTotal = calTotal.split(" ")
@@ -393,19 +391,11 @@ document.addEventListener("DOMContentLoaded", () => {
         $(`#box-${index} .list-box-${index}`).append(`<p>${item.title}</p>`)
       }
       $(`#box-${index} .list-box-${index}`).append(`<li data-variant="${item.id}">${item.qty} x ${item.color}</li>`)       
-       //caja_html += `<li data-variant="{${item.id}">${item.title}  - ${item.id}</li>`
-      //$(`#new-custom-cart #box-${index}`).append(`<li>${item.title}  - ${item.id}</li>`)
-      //console.log(item)
-
        isExistTitle = $(`#box-${index} .list-box-${index} > p`).text()  
-       $(`#box-${index} .cart-item__totals`).html(`$ ${PriceTotal}.00`)
-   
+       $(`#box-${index} .cart-item__totals`).html(`$ ${PriceTotal}.00`)   
     })
-    //caja_html += "</ul>";
   })
-  $("#custom_cart").append(caja_html);
-
-  
+  $("#custom_cart").append(caja_html);  
 });
 </script>
                           
