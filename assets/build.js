@@ -78,67 +78,7 @@ $(document).ready(function () {
     let titleProduct =  $(".header-your-box h3.active").text()
         titleProduct = titleProduct.trim(titleProduct)    
     let checkTitleProd
-
-    if(checkContentItemsInBox == ''){
-      $(".items-added").append(`
-        <div class="item item-${idProduct}" data-title-prod="${titleProduct}" data-prod-id="${idProduct}" data-variant-id="${getIdVariant}">
-          <div class="header-item">${titleProduct}</div>
-          <div class="content" data-variant-id="${getIdVariant}">
-            <p>${getTitleVariant}</p>
-            <div class="selected-qty">
-              <span class="less" data-variant="${getIdVariant}" data-product="${idProduct}">-</span>
-              <span class="qty qty-variant-${getIdVariant}">${updateQty}</span>
-              <span class="more" data-variant="${getIdVariant}" data-inventory="${inventory}">+</span>      
-          </div>
-          </div>
-        </div>
-      `)   
-    }else{      
-      $( ".items-added .item" ).each(function( index, i ) {
-        checkIdProd = $(this).attr("data-prod-id")
-        checkTitleProd = $(this).attr("data-title-prod")
-
-        if(checkTitleProd == titleProduct){
-          return false
-        }
-      });
-
-      if(checkTitleProd == titleProduct){
-        let checkVariantContent 
-        $( ".items-added .item .content" ).each(function( index ){
-          checkVariantContent = $(this).attr("data-variant-id")
-          if(checkVariantContent == getIdVariant){
-            return false
-          }
-        });
-        if(checkVariantContent != getIdVariant){
-          $(`.items-added .item-${idProduct}`).append(`
-          <div class="content" data-variant-id="${getIdVariant}">
-              <p>${getTitleVariant}</p>
-              <div class="selected-qty">
-                  <span class="less" data-variant="${getIdVariant}" data-product="${idProduct}">-</span>
-                  <span class="qty qty-variant-${getIdVariant}">${updateQty}</span>
-                  <span class="more" data-variant="${getIdVariant}" data-inventory="${inventory}">+</span>      
-              </div>
-            </div>
-          `)
-        }
-      }else{
-        $(".items-added").append(`
-          <div class="item item-${idProduct}" data-title-prod="${titleProduct}" data-prod-id="${idProduct}" data-variant-id="${getIdVariant}">
-            <div class="header-item">${titleProduct}</div>
-            <div class="content" data-variant-id="${getIdVariant}">
-              <p>${getTitleVariant}</p>
-              <div class="selected-qty">
-                  <span class="less" data-variant="${getIdVariant}" data-product="${idProduct}">-</span>
-                  <span class="qty qty-variant-${getIdVariant}">${updateQty}</span>
-                  <span class="more" data-variant="${getIdVariant}" data-inventory="${inventory}">+</span>      
-              </div>
-            </div>
-          </div>
-        `)
-      }
-    }
+    appendProducts(inventory,updateQty, checkContentItemsInBox, getTitleVariant, getIdVariant, idProduct, titleProduct, checkTitleProd)
   });
   /* LESS ITEMS */
   $(document).on("click", ".selected-qty .less", function () {
@@ -274,18 +214,34 @@ $(document).ready(function () {
 
 /* LOAD PRODUCTS  */
 const loadProducts = (idBox) => {
-  let loadCurrAdded = 0
-  let activeItemsAdded = 0
+  let loadCurrAdded = 0  
   let currSizeBox = $(".in-your-box .size-box").text()
-      currSizeBox = parseInt(currSizeBox)     
-  jQuery.getJSON('/cart.js', function(cart) {          
+      currSizeBox = parseInt(currSizeBox)
+  let qty = 0
+  let checkContentItemsInBox
+  let checkedTitle = ""
+  jQuery.getJSON('/cart.js', function(cart) {
     $.each( cart.items, function( key, value ) {
+      checkedTitle = ""
       if(value.properties.idBox == idBox){
-        activeItemsAdded = value.quantity - 1
-        $(`.qty-variant-${value.variant_id}`).html(activeItemsAdded)
+        checkContentItemsInBox = $(".items-added").html()
+        if(checkContentItemsInBox){
+          checkContentItemsInBox = checkContentItemsInBox.trim(checkContentItemsInBox)
+        }
+        $(`span.qty-variant-${value.id}`).html(value.quantity)     
         loadCurrAdded = loadCurrAdded + value.quantity
-        $(`.qty-variant-${value.variant_id}`).siblings(".more").trigger("click")
         saveCarts[value.variant_id] = 0
+        qty =  $(`span.qty-variant-${value.id}`).attr("data-inventory")
+
+        $( ".items-added .item .header-item" ).each(function( index ){       
+          checkedTitle = $(this).html()
+        });
+
+        if(value.quantity > 0){
+          $(`.qty-variant-${value.id}`).siblings(".less").removeClass("disabled")
+        }
+
+        appendProducts(qty, value.quantity, checkContentItemsInBox, value.variant_title , value.id , value.product_id, value.product_title, checkedTitle)
       }
     });
     $(".in-your-box .curr-added").text(loadCurrAdded)
@@ -318,3 +274,66 @@ const crearCookie = (key, value) => {
   console.log("creando cookie")
   return (document.cookie = cookie);
 };
+
+const appendProducts = (inventory, updateQty, checkContentItemsInBox, getTitleVariant, getIdVariant, idProduct, titleProduct, checkTitleProd) => {
+  if(checkContentItemsInBox == ''){
+    $(".items-added").append(`
+      <div class="item item-${idProduct}" data-title-prod="${titleProduct}" data-prod-id="${idProduct}" data-variant-id="${getIdVariant}">
+        <div class="header-item">${titleProduct}</div>
+        <div class="content" data-variant-id="${getIdVariant}">
+          <p>${getTitleVariant}</p>
+          <div class="selected-qty">
+            <span class="less" data-variant="${getIdVariant}" data-product="${idProduct}">-</span>
+            <span class="qty qty-variant-${getIdVariant}">${updateQty}</span>
+            <span class="more" data-variant="${getIdVariant}" data-inventory="${inventory}">+</span>      
+        </div>
+        </div>
+      </div>
+    `)   
+  }else{      
+    $( ".items-added .item" ).each(function( index, i ) {
+      checkIdProd = $(this).attr("data-prod-id")
+      checkTitleProd = $(this).attr("data-title-prod")
+
+      if(checkTitleProd == titleProduct){
+        return false
+      }
+    });
+
+    if(checkTitleProd == titleProduct){
+      let checkVariantContent 
+      $( ".items-added .item .content" ).each(function( index ){
+        checkVariantContent = $(this).attr("data-variant-id")
+        if(checkVariantContent == getIdVariant){
+          return false
+        }
+      });
+      if(checkVariantContent != getIdVariant){
+        $(`.items-added .item-${idProduct}`).append(`
+        <div class="content" data-variant-id="${getIdVariant}">
+            <p>${getTitleVariant}</p>
+            <div class="selected-qty">
+                <span class="less" data-variant="${getIdVariant}" data-product="${idProduct}">-</span>
+                <span class="qty qty-variant-${getIdVariant}">${updateQty}</span>
+                <span class="more" data-variant="${getIdVariant}" data-inventory="${inventory}">+</span>      
+            </div>
+          </div>
+        `)
+      }
+    }else{
+      $(".items-added").append(`
+        <div class="item item-${idProduct}" data-title-prod="${titleProduct}" data-prod-id="${idProduct}" data-variant-id="${getIdVariant}">
+          <div class="header-item">${titleProduct}</div>
+          <div class="content" data-variant-id="${getIdVariant}">
+            <p>${getTitleVariant}</p>
+            <div class="selected-qty">
+                <span class="less" data-variant="${getIdVariant}" data-product="${idProduct}">-</span>
+                <span class="qty qty-variant-${getIdVariant}">${updateQty}</span>
+                <span class="more" data-variant="${getIdVariant}" data-inventory="${inventory}">+</span>      
+            </div>
+          </div>
+        </div>
+      `)
+    }
+  }
+}
