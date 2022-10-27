@@ -131,6 +131,7 @@ $(document).ready(function () {
     let addBox = {"items" : []}
     let dt = new Date();
     let id = ""
+
     if(idExist){
       id = idExist
     }else{
@@ -142,23 +143,34 @@ $(document).ready(function () {
         let qty = $(this).find(".qty").text()
         let newItem = {
           "id" : idVariant,  
-          'quantity': qty,
-            selling_plan: 6717605,            
-            properties: {
+          'quantity': qty,   
+           selling_plan: id+idVariant,
+           properties: {
               "boxSize": sizeBoxAdd, 
               "idBox" : id
           }
         }
-        addBox.items.push(newItem)        
+        addBox.items.push(newItem)  
+        console.log(newItem)
     });
 
     if(action == 'update'){
+
+      console.log(saveCarts)
+      
       console.log("is updated")
+      console.log(addBox)
       id = idExist
+      console.log(saveCarts)
       await jQuery.post(window.Shopify.routes.root + 'cart/update.js', {
         updates: saveCarts
+      })      
+      .then((data) => {
+        window.location.href = '/cart';
+        console.log(JSON.parse(data))
+        console.log("update post")
       });
-      console.log("despues de borrar")
+      console.log(saveCarts)
       await fetch(window.Shopify.routes.root + 'cart/add.js', {
         method: 'POST',
         headers: {
@@ -168,13 +180,14 @@ $(document).ready(function () {
       })
       .then((response) => response.json())
       .then((data) => {
-        window.location.href = '/cart';
+        //window.location.href = '/cart';
         console.log(data)
         console.log("agregando")
       });
+      
     }else{
       console.log("is new box")
-      fetch(window.Shopify.routes.root + 'cart/add.js', {
+      await fetch(window.Shopify.routes.root + 'cart/add.js', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -186,7 +199,7 @@ $(document).ready(function () {
         window.location.href = '/cart';        
       });
     }
-     eliminarCookie("idBox")
+     //eliminarCookie("idBox")
   });
 /*  REMOVE BOX CART */
   $(document).on("click", ".removeBox", function () {
@@ -213,7 +226,7 @@ $(document).ready(function () {
 });
 
 /* LOAD PRODUCTS  */
-const loadProducts = (idBox) => {
+const loadProducts = (idBox) => { 
   let loadCurrAdded = 0  
   let currSizeBox = $(".in-your-box .size-box").text()
       currSizeBox = parseInt(currSizeBox)
@@ -223,25 +236,28 @@ const loadProducts = (idBox) => {
   jQuery.getJSON('/cart.js', function(cart) {
     $.each( cart.items, function( key, value ) {
       checkedTitle = ""
-      if(value.properties.idBox == idBox){
-        checkContentItemsInBox = $(".items-added").html()
-        if(checkContentItemsInBox){
-          checkContentItemsInBox = checkContentItemsInBox.trim(checkContentItemsInBox)
+      console.log(cart)
+      if(value.properties){
+        if(value.properties.idBox == idBox){
+          checkContentItemsInBox = $(".items-added").html()
+          if(checkContentItemsInBox){
+            checkContentItemsInBox = checkContentItemsInBox.trim(checkContentItemsInBox)
+          }
+          $(`span.qty-variant-${value.id}`).html(value.quantity)     
+          loadCurrAdded = loadCurrAdded + value.quantity
+          saveCarts[value.variant_id] = 0
+          qty =  $(`span.qty-variant-${value.id}`).attr("data-inventory")
+  
+          $( ".items-added .item .header-item" ).each(function( index ){       
+            checkedTitle = $(this).html()
+          });
+  
+          if(value.quantity > 0){
+            $(`.qty-variant-${value.id}`).siblings(".less").removeClass("disabled")
+          }
+  
+          appendProducts(qty, value.quantity, checkContentItemsInBox, value.variant_title , value.id , value.product_id, value.product_title, checkedTitle)
         }
-        $(`span.qty-variant-${value.id}`).html(value.quantity)     
-        loadCurrAdded = loadCurrAdded + value.quantity
-        saveCarts[value.variant_id] = 0
-        qty =  $(`span.qty-variant-${value.id}`).attr("data-inventory")
-
-        $( ".items-added .item .header-item" ).each(function( index ){       
-          checkedTitle = $(this).html()
-        });
-
-        if(value.quantity > 0){
-          $(`.qty-variant-${value.id}`).siblings(".less").removeClass("disabled")
-        }
-
-        appendProducts(qty, value.quantity, checkContentItemsInBox, value.variant_title , value.id , value.product_id, value.product_title, checkedTitle)
       }
     });
     $(".in-your-box .curr-added").text(loadCurrAdded)
