@@ -29,15 +29,17 @@ $(document).ready(function () {
     let inventory = $(this).attr("data-inventory")
     let available = true
     let idToUpdate = $(this).attr("data-variant")
+    let price = $(this).parents("li").attr("data-price")
+    console.log(price)
     let updateQty = $(`.wrapper-items-for-box .qty-variant-${idToUpdate}`).text()
         updateQty = parseInt(updateQty)
 
-        if(updateQty == inventory){
-          alert("pasaste inventario")
-          available = false
-        }else{
-          updateQty = updateQty + 1
-        }
+    if(updateQty == inventory){
+      alert("pasaste inventario")
+      available = false
+    }else{
+      updateQty = updateQty + 1
+    }
 
     if(updateQty > 0){
       $(`.qty-variant-${idToUpdate}`).siblings(".less").removeClass("disabled")
@@ -79,10 +81,19 @@ $(document).ready(function () {
         titleProduct = titleProduct.trim(titleProduct)    
     let checkTitleProd
     appendProducts(inventory,updateQty, checkContentItemsInBox, getTitleVariant, getIdVariant, idProduct, titleProduct, checkTitleProd)
+
+    /* UPDATE PRICE TOTAL */
+    let currPrice = $("#price-in-box").html()
+      currPrice = parseInt(currPrice)
+      price = parseInt(price)
+    let updatePrice = currPrice + price
+    $("#price-in-box").html(updatePrice)
+
   });
   /* LESS ITEMS */
   $(document).on("click", ".selected-qty .less", function () {
-    let idToUpdate = $(this).attr("data-variant")    
+    let idToUpdate = $(this).attr("data-variant")
+    let price = $(this).parents("li").attr("data-price") 
     let updateQty = $(`.wrapper-items-for-box .qty-variant-${idToUpdate}`).text()      
         updateQty = parseInt(updateQty)
         updateQty = updateQty - 1        
@@ -113,6 +124,13 @@ $(document).ready(function () {
           $(`.items-added .item-${idProduct}`).remove()          
         }
       }
+          /* UPDATE PRICE TOTAL */
+    let currPrice = $("#price-in-box").html()
+    currPrice = parseInt(currPrice)
+    price = parseInt(price)
+    let updatePrice = currPrice - price
+
+    $("#price-in-box").html(updatePrice)
      
   });
   /* BUTTON RESET */
@@ -218,10 +236,21 @@ const loadProducts = (idBox) => {
   let qty = 0
   let checkContentItemsInBox
   let checkedTitle = ""
+  let updatePrice = 0
+  let currPrice = 0
+    updatePrice = parseInt(updatePrice)
   jQuery.getJSON('/cart.js', function(cart) {
     $.each( cart.items, function( key, value ) {
       checkedTitle = ""
-      //console.log(value)
+      updatePrice = $("#price-in-box").html()
+      updatePrice = parseInt(updatePrice)
+      currPrice = parseInt(value.price)
+      updatePrice = updatePrice + currPrice
+
+
+      $("#price-in-box").html(updatePrice)
+      
+      console.log(value)
       if(value.properties){
         if(value.properties.idBox == idBox){
           checkContentItemsInBox = $(".items-added").html()

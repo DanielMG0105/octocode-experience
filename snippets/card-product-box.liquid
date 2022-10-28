@@ -19,7 +19,7 @@
 
     <ul class="wrapper-items-for-box">
       {% for variant in card_product.variants %}
-        <li id="item-{{ variant.id }}" data-title="{{ variant.title }}" data-variant="{{ variant.id }}" data-product="{{ card_product.id }}" data-variant="">      
+        <li id="item-{{ variant.id }}" data-title="{{ variant.title }}" data-variant="{{ variant.id }}" data-product="{{ card_product.id }}" data-variant="" data-price="{{ variant.price }}">      
           <img src="{{ variant.featured_media | image_url: width: 165 }}" >
           <p>{{ variant.title }}</p>        
           <div class="selected-qty">

@@ -386,11 +386,10 @@ document.addEventListener("DOMContentLoaded", () => {
       let calTotal = item.priceTotal
         calTotal = calTotal.split(" ")
         calTotal = calTotal[1]
+      console.log(calTotal)
         calTotal = parseInt(calTotal)
           
-        PriceTotal = PriceTotal + calTotal
-        console.log(item.idProduct)
-
+        PriceTotal = PriceTotal + calTotal        
     $( `#box-${index} .list-box-${index} > div > p` ).each(function( index ){
       isExistTitle = $(this).html()
     });
@@ -401,10 +400,10 @@ document.addEventListener("DOMContentLoaded", () => {
             <p>${item.title}</p>
             <span>${item.qty} x ${item.color}</span>
           </div>`)
-        }else{
-          console.log("igual")
+        }else{          
           $(`#box-${index} .list-box-${index} .item-${item.idProduct}`).append(`<span>${item.qty} x ${item.color}</span>`)
-        }
+        }      
+        $(`#box-${index} .cart-item__totals`).html(`$ ${PriceTotal}.00`)  
     })
   })
   $("#custom_cart").append(caja_html);  
