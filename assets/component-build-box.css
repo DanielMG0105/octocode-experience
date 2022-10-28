@@ -196,19 +196,20 @@ h1.collection-hero__title {
   font-weight: 600;
   text-transform: uppercase;
 }
-.cart-items tbody > .cart-item-box > .cart-item__details > ul {
+.cart-items tbody > .cart-item-box > .cart-item__details > div {
   padding: 0;
   list-style: none;
 }
-.cart-items tbody > .cart-item-box > .cart-item__details > ul > p {
+.cart-items tbody > .cart-item-box > .cart-item__details > div > div > p {
   margin: 0;
   margin-bottom: 5px;
   font-weight: 600;
   font-size: 17px;
 }
-.cart-items tbody > .cart-item-box > .cart-item__details > ul > li {
+.cart-items tbody > .cart-item-box > .cart-item__details > div > div span {
   margin-bottom: 5px;
   font-size: 15px;
+  display: block;
 }
 .cart-items tbody > .cart-item-box > .cart-item__quantity {
   display: flex;

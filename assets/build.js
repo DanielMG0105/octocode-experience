@@ -150,27 +150,14 @@ $(document).ready(function () {
               "idBox" : id
           }
         }
-        addBox.items.push(newItem)  
-        console.log(newItem)
+        addBox.items.push(newItem)          
     });
 
     if(action == 'update'){
-
-      console.log(saveCarts)
-      
-      console.log("is updated")
-      console.log(addBox)
       id = idExist
-      console.log(saveCarts)
       await jQuery.post(window.Shopify.routes.root + 'cart/update.js', {
         updates: saveCarts
-      })      
-      .then((data) => {
-        window.location.href = '/cart';
-        console.log(JSON.parse(data))
-        console.log("update post")
-      });
-      console.log(saveCarts)
+      })               
       await fetch(window.Shopify.routes.root + 'cart/add.js', {
         method: 'POST',
         headers: {
@@ -180,9 +167,7 @@ $(document).ready(function () {
       })
       .then((response) => response.json())
       .then((data) => {
-        //window.location.href = '/cart';
-        console.log(data)
-        console.log("agregando")
+        window.location.href = '/cart';
       });
       
     }else{
@@ -199,7 +184,7 @@ $(document).ready(function () {
         window.location.href = '/cart';        
       });
     }
-     //eliminarCookie("idBox")
+     eliminarCookie("idBox")
   });
 /*  REMOVE BOX CART */
   $(document).on("click", ".removeBox", function () {
@@ -236,7 +221,7 @@ const loadProducts = (idBox) => {
   jQuery.getJSON('/cart.js', function(cart) {
     $.each( cart.items, function( key, value ) {
       checkedTitle = ""
-      console.log(cart)
+      //console.log(value)
       if(value.properties){
         if(value.properties.idBox == idBox){
           checkContentItemsInBox = $(".items-added").html()
@@ -245,17 +230,16 @@ const loadProducts = (idBox) => {
           }
           $(`span.qty-variant-${value.id}`).html(value.quantity)     
           loadCurrAdded = loadCurrAdded + value.quantity
-          saveCarts[value.variant_id] = 0
+          saveCarts[value.key] = 0
           qty =  $(`span.qty-variant-${value.id}`).attr("data-inventory")
   
-          $( ".items-added .item .header-item" ).each(function( index ){       
+          $( ".items-added .item .header-item" ).each(function( index ){
             checkedTitle = $(this).html()
           });
   
           if(value.quantity > 0){
             $(`.qty-variant-${value.id}`).siblings(".less").removeClass("disabled")
           }
-  
           appendProducts(qty, value.quantity, checkContentItemsInBox, value.variant_title , value.id , value.product_id, value.product_title, checkedTitle)
         }
       }

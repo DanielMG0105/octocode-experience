@@ -345,7 +345,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 color: color, 
                 id: {{item.id}},
                 priceTotal :  "{{- item.original_line_price | money -}}",
-                priceFinal :  "{{- item.final_price | money -}}"
+                priceFinal :  "{{- item.final_price | money -}}",
+                idProduct : "{{ item.product_id }}"
               });
         {% endif %}
       {%- endfor -%}
@@ -356,6 +357,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let isExistTitle = "";
   $.each(boxes,function(index, items){   
      PriceTotal = 0
+     isExistTitle = "";    
     $(".cart-items tbody").append(`
     <tr class="cart-item cart-item-box" id="box-${index}">
         <td class="cart-item__media">                                       
@@ -365,7 +367,9 @@ document.addEventListener("DOMContentLoaded", () => {
         </td>
         <td class="cart-item__details">
           <h2>Build a box #${index}</h2>
-          <ul class="list-box-${index}"></ul>
+          <div class="list-box-${index}">
+            
+          </div>
         </td>
         <td class="cart-item__totals right medium-hide large-up-hide">                         
         </td>
@@ -378,21 +382,29 @@ document.addEventListener("DOMContentLoaded", () => {
       </tr>
     `)
   
-    $.each(items, function(index2, item){  
-          let calTotal = item.priceTotal
-           calTotal = calTotal.split(" ")
-           calTotal = calTotal[1]
-           calTotal = parseInt(calTotal)
-           
-           PriceTotal = PriceTotal + calTotal
-           console.log(PriceTotal)
+    $.each(items, function(index2, item){
+      let calTotal = item.priceTotal
+        calTotal = calTotal.split(" ")
+        calTotal = calTotal[1]
+        calTotal = parseInt(calTotal)
+          
+        PriceTotal = PriceTotal + calTotal
+        console.log(item.idProduct)
+
+    $( `#box-${index} .list-box-${index} > div > p` ).each(function( index ){
+      isExistTitle = $(this).html()
+    });
 
       if(isExistTitle != item.title){
-        $(`#box-${index} .list-box-${index}`).append(`<p>${item.title}</p>`)
-      }
-      $(`#box-${index} .list-box-${index}`).append(`<li data-variant="${item.id}">${item.qty} x ${item.color}</li>`)       
-       isExistTitle = $(`#box-${index} .list-box-${index} > p`).text()  
-       $(`#box-${index} .cart-item__totals`).html(`$ ${PriceTotal}.00`)   
+        $(`#box-${index} .list-box-${index} `).append(`
+          <div class="item-${item.idProduct}">
+            <p>${item.title}</p>
+            <span>${item.qty} x ${item.color}</span>
+          </div>`)
+        }else{
+          console.log("igual")
+          $(`#box-${index} .list-box-${index} .item-${item.idProduct}`).append(`<span>${item.qty} x ${item.color}</span>`)
+        }
     })
   })
   $("#custom_cart").append(caja_html);  

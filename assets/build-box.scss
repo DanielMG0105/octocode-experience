@@ -213,18 +213,21 @@ h1.collection-hero__title{
           font-weight: 600;
           text-transform: uppercase;
         }
-        & > ul{
+        & > div{
           padding:0;
           list-style: none;
-          & > p{
-            margin: 0;
-            margin-bottom: 5px;
-            font-weight: 600;
-            font-size: 17px;
-          }
-          & > li{            
-            margin-bottom: 5px;
-            font-size: 15px;
+          & > div{
+            & > p{
+              margin: 0;
+              margin-bottom: 5px;
+              font-weight: 600;
+              font-size: 17px;
+            }
+            span{
+              margin-bottom: 5px;
+              font-size: 15px;
+              display: block;
+            }
           }
         }
       }
